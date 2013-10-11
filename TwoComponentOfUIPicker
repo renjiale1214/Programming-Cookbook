@@ -1,0 +1,165 @@
+/* .h file:
+#import <UIKit/UIKit.h>
+
+#define kProviceComponent 0
+#define kCityComponent 1
+
+@interface ViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate>
+@property (strong, nonatomic) NSDictionary *provincesAndCities;
+@property (strong, nonatomic) NSArray *provinces;
+@property (strong, nonatomic) NSArray *cities;
+
+-(IBAction)buttonPressed:(id)sender;
+
+@end
+
+
+这一次是两个转盘相互关联的UIPcikerView，并且有一个读取plist文件的过程（plist文件未上传）。不仅学习了怎样设置一个
+好的pickerView，也学会了怎么从plist文件里读数据。
+*/
+
+
+
+
+
+
+
+
+
+
+#import "ViewController.h"
+
+@interface ViewController ()
+@property (strong, nonatomic) UIPickerView *myPicker;
+@property (strong, nonatomic) UIButton *button;
+@end
+
+@implementation ViewController
+@synthesize provincesAndCities;
+@synthesize provinces;
+@synthesize cities;
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+    
+    self.myPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+    //初始化button，可以自行设置button的长度以匹配title长短
+    self.button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.button.frame = CGRectMake(120, 200, 80, 27);
+    [self.button setTitle:@"Select" forState:UIControlStateNormal];//普通状态下的button
+    [self.button setTitle:@"Selected" forState:UIControlStateHighlighted];//被点击的button
+    //当button被点击后触发的事件，触发方式为touchUpInside
+    [self.button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    //以下是两个协议的委托
+    self.myPicker.dataSource = self;
+    self.myPicker.delegate = self;
+    [self.view addSubview:self.myPicker];
+    [self.view addSubview:self.button];
+    //选择窗口是否透明，默认是NO
+    self.myPicker.showsSelectionIndicator =YES;
+    
+    
+    //用于获得当前程序的Main Bundle，这个Bundle可以看成是一个文件夹，其中的内容遵循特定的框架。
+    //Main Bundle的一种主要用途是使用程序中的资源，如图片、声音等，本例中使用的是plist文件
+    NSBundle *bundle = [NSBundle mainBundle];
+    //用来获取provinceCities.plist的路径，之后将这个文件中的内容都放在一个NSDictionary对象中
+    //即dictionary这个NSDictionary中
+    NSURL *plistURL = [bundle URLForResource:@"provinceCities" withExtension:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfURL:plistURL];
+    self.provincesAndCities = dictionary;//又赋给之前定义的字典
+
+/*此方法更简单，用dictionaryWithContentOfURL 或者 dictionaryWithContentOfFile 都可以
+    NSString *plist = [[NSBundle mainBundle] pathForResource:@"provinceCities" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:plist];
+    self.provincesAndCities = dictionary;
+*/
+    
+    //把字典中的所有key（即省份）放在一个数组里
+    NSArray *components = [self.provincesAndCities allKeys];
+    //sortedArrayUsingSelector方法是利用指定的selector对array的元素进行排序
+    NSArray *sorted = [components sortedArrayUsingSelector:@selector(compare:)];
+    //最终处理过的省份信息放在了province里
+    self.provinces = sorted;
+    
+    //把每个省的城市信息都放进了cities里
+    NSString *selectedState = [self.provinces objectAtIndex:0];
+    NSArray *array = [provincesAndCities objectForKey:selectedState];
+    self.cities = array;
+    
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView//依旧是2个转盘
+{
+    return 2;
+}
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component//两边不同的元素数
+{
+    if (component == kProviceComponent) {
+        return [self.provinces count];
+    }
+    else
+    {
+        return [self.cities count];
+    }
+}
+//读取每个元素
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (component == kProviceComponent) {
+        return [self.provinces objectAtIndex:row];
+    }
+    else
+    {
+        return [self.cities objectAtIndex:row];
+    }
+}
+//当检测到修改的是左边转盘的值，则将self.cities中的内容替换成相应的数组，
+//并执行[picker reloadComponent:kCityComponent];这个语句
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == kProviceComponent) {
+        NSString *selectedState = [self.provinces objectAtIndex:row];
+        NSArray *array = [provincesAndCities objectForKey:selectedState];
+        self.cities = array;
+        [self.myPicker selectRow:0 inComponent:kCityComponent animated:YES];
+        [self.myPicker reloadComponent:kCityComponent];
+    }
+}
+//可以用来修改每个转盘的宽度，虽然在这个例子中不必要，但是我们得知道是怎么做的
+-(CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+{
+    if (component == kCityComponent) {
+        return 150;
+    }
+    return 140;
+}
+
+//button触发的事件
+-(IBAction)buttonPressed:(id)sender
+{
+    NSInteger provinceRow = [self.myPicker selectedRowInComponent:kProviceComponent];
+    NSInteger cityRow = [self.myPicker selectedRowInComponent:kCityComponent];
+    
+    NSString *province = [self.provinces objectAtIndex:provinceRow];
+    NSString *city = [self.cities objectAtIndex:cityRow];
+    
+    NSString *title = [[NSString alloc] initWithFormat:@"你选择了%@",city];
+    NSString *msg   = [[NSString alloc] initWithFormat:@"%@属于%@",city,province];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:@"好的"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
