@@ -1,0 +1,99 @@
+
+/*
+.h file is:
+#import <UIKit/UIKit.h>
+
+@interface ViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate>
+@property (strong, nonatomic) NSArray *pickerData;
+@property (strong, nonatomic) NSArray *pickerData2;
+
+-(IBAction)buttonPressed:(id)sender;
+@end
+*/
+
+/*
+本例只是简单的实现了pickerView，两个转盘互相之间没有关联，之后将实现有关联的
+*/
+
+#import "ViewController.h"
+
+@interface ViewController ()
+@property (strong, nonatomic) UIPickerView *myPicker;
+@property (strong, nonatomic) UIButton *button;
+
+@end
+
+@implementation ViewController
+@synthesize pickerData;
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+    //pickerView初始化，IOS7允许自行设置picker的大小
+    self.myPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+    //初始化button，可以自行设置button的长度以匹配title长短
+    self.button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.button.frame = CGRectMake(120, 200, 80, 27);
+    [self.button setTitle:@"Select" forState:UIControlStateNormal];//普通状态下的button
+    [self.button setTitle:@"Selected" forState:UIControlStateHighlighted];//被点击的button
+    //当button被点击后触发的事件，触发方式为touchUpInside
+    [self.button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    //以下是两个协议的委托
+    self.myPicker.dataSource = self;
+    self.myPicker.delegate = self;
+    [self.view addSubview:self.myPicker];
+    [self.view addSubview:self.button];
+    //选择窗口是否透明，默认是NO
+    self.myPicker.showsSelectionIndicator =YES;
+    
+    //两个array，用来给转盘里添加数据（少量数据时候使用）
+    self.pickerData = [[NSArray alloc] initWithObjects:@"red",@"yellow",@"blue",@"pink",@"purple",@"white",@"black",@"gray",@"green", nil];
+    self.pickerData2 = [[NSArray alloc]
+                        initWithObjects:@"cake",@"bread",@"rice",@"nodole",@"coffee",@"hamburger",@"sandwitch", nil];
+   
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView//选择有几个转盘
+{
+    return 2;
+}
+
+//确定每个转盘有多少个元素
+-(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return [self.pickerData count];
+    }
+    else
+    {
+        return [self.pickerData2 count];
+    }
+}
+
+//从array里导入每个转盘里的元素
+-(NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return [self.pickerData objectAtIndex:row];
+    }
+    else
+    {
+        return [self.pickerData2 objectAtIndex:row];
+    }
+}
+
+//button触发的事件
+-(IBAction)buttonPressed:(id)sender
+{
+    NSInteger row  = [self.myPicker selectedRowInComponent:0];
+    NSInteger row2 = [self.myPicker selectedRowInComponent:1];
+    NSString *selected  = [self.pickerData objectAtIndex:row];
+    NSString *selected2 = [self.pickerData2 objectAtIndex:row2];
+    NSString *msg = [[NSString alloc] initWithFormat:@"You Selected \"%@\" & \"%@\"",selected,selected2];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello!"
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Yes,it is"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+}
