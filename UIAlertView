@@ -1,0 +1,36 @@
+/*
+以下是创建一个UIAlertView的过程，其中两个button的title被分别放在了两个专门的函数中，主要目的是为了调试用
+平时在实际中创建alert的时候只需要initWithTitle:message:delegate:cancelButtonTitle;yesButtonTitles:这个方法就行了
+*/
+
+-(NSString *) yesButtonTitle
+{
+    return @"YES";
+}
+
+-(NSString *) noButtonTitle
+{
+    return @"NO";
+}
+
+-(void) viewDidAppear:(BOOL)animated    //原来写在viewDidLoad里的代码
+{
+    [super viewDidAppear:animated];
+    UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:@"测试弹窗" message:@"你能看到这些说明创建成功了" delegate:self cancelButtonTitle:[self noButtonTitle] otherButtonTitles:[self yesButtonTitle], nil];    //初始化alertView，设置标题、信息、按钮信息等
+    
+    
+    [myAlert show];
+}
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex  //用来测试用户点击了哪个按钮
+{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:[self yesButtonTitle]]) {
+        NSLog(@"User pressed the YES button");
+    }
+    else if([buttonTitle isEqualToString:[self noButtonTitle]])
+    {
+        NSLog(@"User Pressed the NO button");
+    }
+}
+
