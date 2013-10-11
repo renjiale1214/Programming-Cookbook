@@ -1,0 +1,29 @@
+/*
+简单创建一个UISwitch，然后调用了theSymbleOfSwitch:函数来判断switch的开关状态
+*/
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+    
+    //初始化一个switch
+    UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectMake
+                          (100.0f, 100.0f, 0.0f, 0.0f)];
+    [mySwitch addTarget:self
+                 action:@selector(theSymbleOfSwitch:)
+       forControlEvents:UIControlEventValueChanged];  //这里的UIControlEventValueChanged以后经常会用
+    [self.view addSubview:mySwitch];
+   
+}
+
+-(void) theSymbleOfSwitch:(UISwitch *)paramSender    //判断switch的开关状态
+{
+    NSLog(@"Sender is = %@",paramSender);
+    if ([paramSender isOn]) {
+        NSLog(@"the Switch is on");
+    }
+    else
+    {
+        NSLog(@"the Switch is off");
+    }
+}
