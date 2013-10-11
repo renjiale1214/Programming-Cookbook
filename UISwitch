@@ -27,3 +27,12 @@
         NSLog(@"the Switch is off");
     }
 }
+
+
+/*
+输出结果：
+2013-10-11 10:09:35.402 WillSendToGithub[1109:a0b] Sender is = <UISwitch: 0xa2584a0; frame = (100 100; 51 31); layer = <CALayer: 0xa259da0>>
+2013-10-11 10:09:35.403 WillSendToGithub[1109:a0b] the Switch is on
+2013-10-11 10:09:45.121 WillSendToGithub[1109:a0b] Sender is = <UISwitch: 0xa2584a0; frame = (100 100; 51 31); layer = <CALayer: 0xa259da0>>
+2013-10-11 10:09:45.121 WillSendToGithub[1109:a0b] the Switch is off
+*/
