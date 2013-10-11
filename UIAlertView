@@ -18,6 +18,10 @@
     [super viewDidAppear:animated];
     UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:@"测试弹窗" message:@"你能看到这些说明创建成功了" delegate:self cancelButtonTitle:[self noButtonTitle] otherButtonTitles:[self yesButtonTitle], nil];    //初始化alertView，设置标题、信息、按钮信息等
     
+        
+    [myAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];     //这一步是规定alert的样式
+    UITextField *textField = [myAlert textFieldAtIndex:0];          //新建了一个textField，内容和alert上的一样（这里alert选择的是可以输入内容的样式）
+    textField.keyboardType = UIKeyboardTypeASCIICapable;            //规定键盘的样式（UIKeyboardType....）
     
     [myAlert show];
 }
