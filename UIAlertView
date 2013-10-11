@@ -24,7 +24,6 @@
                                                      delegate:self
                                             cancelButtonTitle:[self noButtonTitle]
                                             otherButtonTitles:[self yesButtonTitle], nil];
-    
     //这一步是规定alert的样式
     [myAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     //新建了一个textField，内容和alert上的一样（这里alert选择的是可以输入内容的样式）
