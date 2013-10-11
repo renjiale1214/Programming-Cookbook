@@ -1,6 +1,7 @@
 /*
 以下是创建一个UIAlertView的过程，其中两个button的title被分别放在了两个专门的函数中，主要目的是为了调试用
 平时在实际中创建alert的时候只需要initWithTitle:message:delegate:cancelButtonTitle;yesButtonTitles:这个方法就行了
+注意，在头文件里要加上<UIAlertViewDelegate>这个代理方法
 */
 
 -(NSString *) yesButtonTitle
