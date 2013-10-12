@@ -1,0 +1,18 @@
+   
+//UISegmentedControl的简单使用  
+   
+@property (strong, nonatomic) UISegmentedControl *mySegmentedControl;
+   
+   
+   
+    NSArray *segment = [[NSArray alloc] initWithObjects:
+                        @"Apple",
+                        @"SanSung",
+                        @"Nokia",
+                        @"HTC",nil];
+    self.mySegmentedControl = [[UISegmentedControl alloc] initWithItems:segment];
+    CGRect frame = CGRectMake(0, 300, 320, 40);
+    self.mySegmentedControl.frame = frame;
+    self.mySegmentedControl.tintColor = [UIColor lightGrayColor];
+    self.mySegmentedControl.momentary = YES;//点击后是否恢复原样
+    [self.view addSubview:self.mySegmentedControl];
