@@ -1,0 +1,125 @@
+/*
+简单的应用UINavigationController
+只是在两个界面之间添加了navigation栏，同时使用了UIBarButtonItem、UISegmentedControl
+*/
+
+//下边是delegate.h和.m文件
+//两个自带xib的UIViewController分别是RootViewController和SecondViewController
+#import <UIKit/UIKit.h>
+#import "RootViewController.h"
+
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) UINavigationController *navigationController;
+@property (strong, nonatomic) RootViewController *rootViewController;
+
+
+
+@end
+
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    self.rootViewController = [[RootViewController alloc] init];
+    self.rootViewController.title = @"RootView";
+    self.navigationController = [[UINavigationController alloc] init];
+    [self.navigationController pushViewController:self.rootViewController animated:YES];
+    [self.window addSubview:self.navigationController.view];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+
+/*
+以下是RootViewController.m文件中的代码
+SecondViewController里没有添加代码，只是作为一个被跳转过去的页面存在
+*/
+
+#import "RootViewController.h"
+
+@interface RootViewController ()
+
+@end
+
+@implementation RootViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+//制作了一个在底部的UISegmentedControl,不足的是没有办法应用到每一个被跳转的页面（像微信主页面一样）
+-(void) makeSegmentedControlOntheBottom
+{
+    NSArray *segmentContent = [[NSArray alloc] initWithObjects:@"微信",@"通讯录",@"发现",@"我",nil];
+    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:segmentContent];
+    segment.frame = CGRectMake(0, 440, 320, 40);
+    segment.momentary = YES;//点击分段后是否弹回原状态，YES表示返回原状态，NO则被选中，高亮
+    [self.view addSubview:segment];
+    [segment addTarget:self action:@selector(clickTheSegmentOnthBottom:) forControlEvents:UIControlEventValueChanged];
+}
+
+//当点击segment的时候触发的事件（只写了第一和第三个的）
+-(void) clickTheSegmentOnthBottom:(id)paramSender
+{
+    switch ([paramSender selectedSegmentIndex]) {
+        
+        case 0:
+        {
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle:@"选择" message:@"你选择了\"微信\""
+                                  delegate:self
+                                  cancelButtonTitle:@"是的"
+                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
+            break;
+        case 2:
+        {
+            SecondViewController *secondeView = [[SecondViewController alloc] init];
+            [self.navigationController pushViewController:secondeView animated:YES];
+            secondeView.title = @"secondView";
+        }
+        break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    //在navigation的bar上添加了一个右按钮
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]
+                                    initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                    target:self action:@selector(selectRightBarButton:)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    [self makeSegmentedControlOntheBottom];
+    
+}
+
+-(void) selectRightBarButton:(id)paramSender//右按钮执行的方法
+{
+    SecondViewController *secondViewController = [[SecondViewController alloc] init];
+    [self.navigationController pushViewController:secondViewController animated:YES];
+    secondViewController.title = @"SecondView";
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
