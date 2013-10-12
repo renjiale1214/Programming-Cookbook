@@ -1,0 +1,105 @@
+/*
+这里列出来了大部分的UILabel的属性，方便以后使用时候查询
+*/
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, 220, 40)];
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(50, 70, 220, 40)];
+    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(50, 120, 220, 40)];
+    UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(50, 170, 220, 40)];
+    UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(50, 220, 220, 40)];
+    UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(50, 270, 220, 40)];
+    UILabel *label7 = [[UILabel alloc] initWithFrame:CGRectMake(50, 320, 220, 40)];
+/*
+ 
+    //这一段写得是自适应文本框的长文字，但是里边弃用的方法有点特么的多啊······
+    UIFont *fontOne = [UIFont systemFontOfSize:17.0f];
+    NSString *titleOne =@"我写了这么长的一串字符就是为了让你看不到难道你不知道么？？？";//要显示的内容
+    CGSize maximumLabelSizeOne = CGSizeMake(315, MAXFLOAT);
+    CGSize expectedLabelSizeOne = [titleOne sizeWithFont:fontOne
+                                   constrainedToSize:maximumLabelSizeOne
+                                           lineBreakMode:UILineBreakModeWordWrap];
+    //expectedLabelSizeOne.height 就是内容的高度
+    UILabel *label8 = [[UILabel alloc] initWithFrame:CGRectMake(5, 360, 315, expectedLabelSizeOne.height)];
+    label8.lineBreakMode = UILineBreakModeCharacterWrap;
+    label8.numberOfLines = 0;
+    label8.text = titleOne;
+    [self.view addSubview:label8];
+*/
+    
+    label1.text = @"label1";
+    label2.text = @"label2";
+    label3.text = @"label3-------xie de yi ding bi jiao chang-------label3";
+    label4.text = @"label4--label4--label4--label4--";
+    label5.text = @"label5--label5--label5--label5--label5--label5--";
+    label6.text = @"label6";
+    label7.text = @"label7";
+    
+    //设置字体:粗体，正常的是 SystemFontOfSize
+    label1.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    //设置文字大小
+    label2.font = [UIFont systemFontOfSize:25.0f];
+    
+    //设置文字颜色
+    label2.textColor = [UIColor blueColor];
+    label7.textColor = [UIColor grayColor];
+    
+    //设置文字位置
+    label2.textAlignment = UITextAlignmentCenter;
+    label3.textAlignment = UITextAlignmentLeft;
+    
+    //设置字体大小适应label宽度
+    label4.adjustsFontSizeToFitWidth = YES;
+    
+    //设置label行数和背景色
+    label5.numberOfLines = 5;
+    label5.backgroundColor = [UIColor grayColor];
+    
+    //设置高亮
+    label6.highlighted = YES;
+    label6.highlightedTextColor = [UIColor orangeColor];
+    
+    //设置阴影
+    label7.shadowColor = [UIColor greenColor];
+    label7.shadowOffset = CGSizeMake(1.0,1.0);
+    
+    //设置能否与用户交互
+    label7.userInteractionEnabled = YES;
+    
+    //设置中文的文字是否可变，默认值是YES
+    label1.enabled = NO;
+    
+    //设置文字过长时的显示格式
+    label3.lineBreakMode = UILineBreakModeMiddleTruncation;
+    //  typedef enum {
+    //      UILineBreakModeWordWrap = 0,
+    //      UILineBreakModeCharacterWrap,
+    //      UILineBreakModeClip,//截去多余部分
+    //      UILineBreakModeHeadTruncation,//截去头部
+    //      UILineBreakModeTailTruncation,//截去尾部
+    //      UILineBreakModeMiddleTruncation,//截去中间
+    //  } UILineBreakMode;
+    
+
+    
+    
+    [self.view addSubview:label1];
+    [self.view addSubview:label2];
+    [self.view addSubview:label3];
+    [self.view addSubview:label4];
+    [self.view addSubview:label5];
+    [self.view addSubview:label6];
+    [self.view addSubview:label7];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
