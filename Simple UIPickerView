@@ -1,4 +1,3 @@
-
 /*
 .h file is:
 #import <UIKit/UIKit.h>
@@ -14,6 +13,7 @@
 /*
 本例只是简单的实现了pickerView，两个转盘互相之间没有关联，之后将实现有关联的
 */
+
 
 #import "ViewController.h"
 
