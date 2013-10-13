@@ -1,0 +1,63 @@
+/*
+简单实现了UITextfield的常用功能；
+delegate就只写了向下收键盘的方法，而且还是点击retrun键下收的，
+之后会写出点击屏幕空白处收键盘的方法的
+*/
+
+#import "ViewController.h"
+
+@interface ViewController ()
+@property (strong, nonatomic) UITextField *textField;
+@end
+
+@implementation ViewController
+
+//实现delegate的方法，关闭键盘
+-(BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    [self.textField resignFirstResponder];
+    return YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    self.textField = [[UITextField alloc] initWithFrame:CGRectMake(30, 120, 240, 25)];
+    self.textField.borderStyle = UITextBorderStyleRoundedRect;//边框类型
+    self.textField.backgroundColor = [UIColor whiteColor];//背景色
+//    self.textField.background = [UIImage imageNamed:@"XX.png"];//如果要给背景加图片的话
+    self.textField.textAlignment = UITextAlignmentCenter;//文字位置
+    self.textField.textColor = [UIColor redColor];//文本框内字的颜色
+    self.textField.font = [UIFont fontWithName:@"Arial" size:20.0];//文本框内的字体和字号 fontWithName，设置字体
+    self.textField.placeholder = @"Please inmport...";//默认显示文字
+    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;//清除行文字的叉
+    self.textField.autocorrectionType = UITextAutocorrectionTypeDefault;//自动纠错类型
+    /*
+     typedef enum {
+     UITextAutocorrectionTypeDefault, 默认
+     UITextAutocorrectionTypeNo, 　不自动纠错
+     UITextAutocorrectionTypeYes,　自动纠错
+     } UIText
+    */
+//    self.textField.secureTextEntry = YES;//文字是否以密码形式显示
+    self.textField.clearsOnBeginEditing = YES;//再次编辑就清空
+    self.textField.adjustsFontSizeToFitWidth = YES;//设置为YES时文本会自动缩小以适应文本窗口大小.默认是保持原来大小,而让长文本滚动
+    self.textField.keyboardType = UIKeyboardTypeASCIICapable;//设置键盘样式
+    self.textField.returnKeyType =UIReturnKeyDefault;//Return键的功能
+    
+    self.textField.delegate = self;
+    [self.view addSubview:self.textField];
+    
+    
+}
+
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
