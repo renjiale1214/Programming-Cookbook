@@ -1,0 +1,40 @@
+/*
+设置UIImageView的三种方法
+*/
+
+
+@interface ViewController ()
+@property (strong, nonatomic) UIImageView *imageView1;
+@property (strong, nonatomic) UIImageView *imageView2;
+@property (strong, nonatomic) UIImageView *imageView3;
+@end
+
+@implementation ViewController
+
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    self.imageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 140)];
+    self.imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 140, 320, 140)];
+    self.imageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 280, 320, 140)];
+    
+    [self.imageView1 setImage:[UIImage imageNamed:@"imageView1.png"]];
+    
+    NSString *filePath2 = [[NSBundle mainBundle] pathForResource:@"imageView2" ofType:@"png"];
+    UIImage *image2 = [UIImage imageWithContentsOfFile:filePath2];
+    [self.imageView2 setImage:image2];
+    
+    NSString *filePath3 = [[NSBundle mainBundle] pathForResource:@"imageView3" ofType:@"png"];
+    NSData *data = [NSData dataWithContentsOfFile:filePath3];
+    UIImage *image3 = [UIImage imageWithData:data];
+    [self.imageView3 setImage:image3];
+    
+    [self.view addSubview:self.imageView1];
+    [self.view addSubview:self.imageView2];
+    [self.view addSubview:self.imageView3];
+
+}
+
