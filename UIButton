@@ -1,0 +1,20 @@
+/*
+UIButton 很简单，常用的也就是做一下点击事件，不用赘述
+*/
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    self.button = [UIButton buttonWithType: UIButtonTypeRoundedRect];
+    self.button.frame = CGRectMake(115, 200, 90,30);
+    self.button.backgroundColor = [UIColor redColor];
+    [self.button setTitle:@"OK" forState:UIControlStateNormal];
+    [self.button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.button];
+}
+
+-(void) buttonPressed:(UIButton *)paramSender
+{
+    self.button.hidden = YES;
+}
