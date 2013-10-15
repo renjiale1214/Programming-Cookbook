@@ -41,6 +41,7 @@ delegate就只写了向下收键盘的方法，而且还是点击retrun键下收
      } UIText
     */
 //    self.textField.secureTextEntry = YES;//文字是否以密码形式显示
+    self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;//不让首字母大写，似乎默认是首字母大写的
     self.textField.clearsOnBeginEditing = YES;//再次编辑就清空
     self.textField.adjustsFontSizeToFitWidth = YES;//设置为YES时文本会自动缩小以适应文本窗口大小.默认是保持原来大小,而让长文本滚动
     self.textField.keyboardType = UIKeyboardTypeASCIICapable;//设置键盘样式
