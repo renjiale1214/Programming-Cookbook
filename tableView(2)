@@ -1,0 +1,243 @@
+/*
+这一次的tableView实现了多级页面，并且加入了navigation栏
+分三个页面，用了三个viewController，分别是：rootViewController,movieViewController,movieDetailViewController
+*/
+
+AppDelegate.m:
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    RootViewController *rootViewController = [[RootViewController alloc] initWithStyle:UITableViewStylePlain];
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    [self.window addSubview:self.navigationController.view];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+
+rootViewController.m:
+
+#import "RootViewController.h"
+#import "movieViewController.h"
+
+@interface RootViewController ()
+@property (strong, nonatomic) movieViewController *movieViewController;
+@end
+
+@implementation RootViewController
+
+@synthesize controllerList;
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = @"分类";
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    self.movieViewController = [[movieViewController alloc]
+                                                initWithStyle:UITableViewStylePlain];
+    self.movieViewController.title = @"电影";
+    [array addObject:self.movieViewController];
+    self.controllerList = array;
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [self.controllerList count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+    UITableViewController *controller = [self.controllerList objectAtIndex:indexPath.row];
+    cell.textLabel.text = controller.title;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    // Configure the cell...
+    
+    return cell;
+}
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIViewController *nextViewController = [self.controllerList objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:nextViewController animated:YES];
+}
+
+
+movieViewController.m:
+
+#import "movieViewController.h"
+#import "movieDetailViewController.h"
+#import "AppDelegate.h"
+
+@interface movieViewController ()
+
+@end
+
+@implementation movieViewController
+
+@synthesize movieList;
+@synthesize childController;
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NSArray *array = [[NSArray alloc] initWithObjects:@"肖申克的救赎", @"教父", @"教父：II",
+                      @"低俗小说", @"黄金三镖客", @"十二怒汉", @"辛德勒名单",
+                      @"蝙蝠侠前传2：黑暗骑士", @"指环王：王者归来", @"飞越疯人院",
+                      @"星球大战Ⅴ：帝国反击战", @"搏击俱乐部", @"盗梦空间", @"七武士",
+                      @"指环王：护戒使者", @"好家伙", @"星球大战IV：新希望", @"上帝之城",
+                      @"卡萨布兰卡", @"黑客帝国", @"西部往事", @"后窗", @"夺宝奇兵",
+                      @"沉默的羔羊", @"非常嫌疑犯", @"七宗罪", @"指环王：双塔奇兵", @"阿甘正传",
+                      @"惊魂记", @"美好人生", nil];
+    self.movieList = array;
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [self.movieList count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    cell.textLabel.text = [self.movieList objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    // Configure the cell...
+    
+    return cell;
+}
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (self.childController == nil) {
+        self.childController = [[movieDetailViewController alloc] init];
+    }
+    NSString *selectMovie = [self.movieList objectAtIndex:indexPath.row];
+    NSString *detailMessage = [[NSString alloc] initWithFormat:@"你选择了电影：\"%@\"",selectMovie];
+    self.childController.message = detailMessage;
+    self.childController.title = selectMovie;
+    [self.navigationController pushViewController:self.childController animated:YES];
+
+}
+
+
+movieDetailViewController.m:
+
+#import "movieDetailViewController.h"
+
+
+@interface movieDetailViewController ()
+
+@end
+
+@implementation movieDetailViewController
+
+@synthesize message;
+@synthesize movieLabel;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    self.movieLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 270, 300, 35)];
+    self.movieLabel.font = [UIFont fontWithName:@"Arial Hebrew" size:20.0f];
+    self.movieLabel.adjustsFontSizeToFitWidth = NO;
+    [self.view addSubview:self.movieLabel];
+}
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    self.movieLabel.text = self.message;
+    [super viewWillAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
+
+
