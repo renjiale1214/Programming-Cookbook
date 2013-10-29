@@ -1,7 +1,5 @@
 /*
-简单实现了UITextfield的常用功能；
-delegate就只写了向下收键盘的方法，而且还是点击retrun键下收的，
-之后会写出点击屏幕空白处收键盘的方法的
+简单实现了UITextfield的常用功能；也实现了点击空白处收起键盘的功能；
 */
 
 #import "ViewController.h"
@@ -50,10 +48,18 @@ delegate就只写了向下收键盘的方法，而且还是点击retrun键下收
     self.textField.delegate = self;
     [self.view addSubview:self.textField];
     
+    //这一步就是点击空白处收起键盘的方法
+    UITapGestureRecognizer *tapGr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
+    tapGr.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGr];
+
     
 }
 
-
+-(void) viewTapped:(UITapGestureRecognizer *) tapGr
+{
+    [self.textField resignFirstResponder];
+}
 
 - (void)didReceiveMemoryWarning
 {
